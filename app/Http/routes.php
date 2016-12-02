@@ -12,3 +12,11 @@
 */
 
 Route::get('/', 'PostController@index');
+Route::resource('discussion','PostController');
+
+Route::get('/user/register','UserController@register');
+Route::post('/user/register','UserController@store');
+Route::get('/verify/{confirm_code}','UserController@confirmEmail');
+Route::get('/user/login','UserController@login');
+Route::post('/user/login','UserController@signIn');
+Route::get('/user/logout','UserController@logout');

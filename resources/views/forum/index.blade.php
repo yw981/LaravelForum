@@ -3,7 +3,7 @@
     <div class="jumbotron">
         <div class="container">
             <h1>Navbar example
-                <a class="btn btn-lg btn-primary pull-right" href="../../components/#navbar" role="button">View navbar docs »</a>
+                <a class="btn btn-lg btn-primary pull-right" href="{{ url('discussion/create') }}" role="button">create post »</a>
             </h1>
         </div>
 
@@ -19,7 +19,7 @@
                             </a>
                         </div>
                         <div class="media-body">
-                            <h4 class="media-heading">{{ $discussion->title }}</h4>
+                            <h4 class="media-heading"><a href="/discussion/{{ $discussion->id }}">{{ $discussion->title }}</a></h4>
                             {{ $discussion->user->name }}
                         </div>
                     </div>

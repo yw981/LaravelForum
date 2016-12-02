@@ -11,20 +11,20 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $fillable = [
-        'name', 'email', 'password','avatar'
-    ];
+    protected $fillable = ['name', 'email', 'password','avatar','confirm_code'];
 
     /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
      */
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
+    protected $hidden = ['password', 'remember_token',];
 
     public function discussions(){
         return $this->hasMany(Discussion::class);
+    }
+
+    public function setPasswordAttribute($password){
+        $this->attributes['password'] = \Hash::make($password);
     }
 }

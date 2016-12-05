@@ -28,7 +28,36 @@
                 <div class="blog-post">
                     {!! $html !!}
                 </div>
-
+                <hr>
+                @foreach($discussion->comments as $comment)
+                    <div class="media">
+                        <div class="media-left">
+                            <a href="#">
+                              <img class="media-object img-circle" alt="64x64" src="{{ $comment->user->avatar }}" style="width: 64px; height: 64px;">
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading">{{ $comment->user->name }}</h4>
+                            {{ $comment->body }}
+                        </div>
+                    </div>
+                @endforeach
+                <hr>
+                @if(Auth::check())
+                {!! Form::open(['url'=>'/comment']) !!}
+                    {!! Form::hidden('discussion_id',$discussion->id ) !!}
+                    <!--- Body Field --->
+                    <div class="form-group">
+                        {!! Form::label('body', 'Body:') !!}
+                        {!! Form::textarea('body', null, ['class' => 'form-control']) !!}
+                    </div>
+                    <div>
+                        {!! Form::submit('Comment',['class'=>'btn btn-success pull-right']) !!}
+                    </div>
+                {!! Form::close() !!}
+                @else
+                    <a href="/user/login" class="btn btn-block btn-success">Login to comment</a>
+                @endif
             </div>
         </div>
     </div>

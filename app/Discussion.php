@@ -12,4 +12,8 @@ class Discussion extends Model
         // 注意一定要写return !!!!
         return $this->belongsTo(User::class,'user_id'); // $discussion->user
     }
+
+    public function comments(){
+        return $this->hasMany(Comment::class);
+    }
 }

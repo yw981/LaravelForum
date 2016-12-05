@@ -29,7 +29,7 @@ class PostController extends Controller
     protected $parser;
 
     public function index(){
-        $discussions = Discussion::all();
+        $discussions = Discussion::latest()->get();
         //$d = Discussion::find(1);
         //dd($d->user);
         return view('forum.index',compact('discussions'));
@@ -57,6 +57,7 @@ class PostController extends Controller
 
     public function store(Requests\PostCreateRequest $request)
     {
+        //dd($request->all());
         $data = [
             'user_id'=>\Auth::user()->id,
             'last_user_id'=>\Auth::user()->id,

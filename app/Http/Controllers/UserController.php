@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Image;
 use Mail;
 use App\User;
 use Illuminate\Http\Request;
@@ -51,6 +52,23 @@ class UserController extends Controller
 
     public function login(){
         return view('user.login');
+    }
+
+    public function avatar(){
+        return view('user.avatar');
+    }
+
+    public function changeAvatar(Request $request){
+        $file = $request->file('avatar');
+        //dd($file);
+        $destinationPath = 'upload/';
+        $user = \Auth::user();
+        $filename = $user->id.'_'.substr(time(),-6,6).'_'.$file->getClientOriginalName();
+        $file->move($destinationPath, $filename);
+        Image::make($destinationPath.$filename)->fit(200)->save();
+        $user->avatar = '/'.$destinationPath.$filename;
+        $user->save();
+        return redirect('/user/avatar');
     }
 
     public function signIn(Requests\UserLoginRequest $request){

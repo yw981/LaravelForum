@@ -9,9 +9,11 @@
                     </a>
                 </div>
                 <div class="media-body">
+                    @if(Auth::check() && Auth::user()->id == $discussion->user_id)
                     <h1>
-                        <a class="btn btn-lg btn-primary pull-right" href="../../components/#navbar" role="button">Edit this »</a>
+                        <a class="btn btn-lg btn-primary pull-right" href="{{ url('discussion/'.$discussion->id.'/edit') }}" role="button">Edit this »</a>
                     </h1>
+                    @endif
                     <h4 class="media-heading">{{ $discussion->title }}</h4>
                     {{ $discussion->user->name }}
                 </div>
@@ -24,7 +26,7 @@
         <div class="row">
             <div class="col-md-9" role="main">
                 <div class="blog-post">
-                    {{ $discussion->body }}
+                    {!! $html !!}
                 </div>
 
             </div>

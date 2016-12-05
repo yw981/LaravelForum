@@ -18,7 +18,7 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     @if(Auth::check())
-                        <li><a href="/user/register">{{ Auth::user()->name }}</a></li>
+                        <li><a href="#">{{ Auth::user()->name }}</a></li>
                         <li><a href="/user/logout">Logout</a></li>
                     @else
                         <li><a href="/user/register">Register</a></li>

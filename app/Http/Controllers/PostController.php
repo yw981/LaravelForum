@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Discussion;
-use Illuminate\Http\Request;
+use App\Markdown\Markdown;
 
 use App\Http\Requests;
 
@@ -11,15 +11,22 @@ class PostController extends Controller
 {
     /**
      * PostController constructor.
+     * @var Markdown $parser
      */
-    public function __construct()
+    public function __construct(Markdown $parser)
     {
         $this->middleware('auth',[
             'only'=>[
                 'create','store','edit','update'
             ]
         ]);
+        $this->parser = $parser;
     }
+
+    /**
+     * Markdown Parser
+     */
+    protected $parser;
 
     public function index(){
         $discussions = Discussion::all();
@@ -31,7 +38,17 @@ class PostController extends Controller
     public function show($id){
         //dd($id);
         $discussion = Discussion::findOrFail($id);
-        return view('forum.show',compact('discussion'));
+        $html = $this->parser->markdown($discussion->body);
+        return view('forum.show',compact('discussion','html'));
+    }
+
+    public function edit($id){
+        //dd($id);
+        $discussion = Discussion::findOrFail($id);
+        if(\Auth::user()->id !== $discussion->user_id){
+            return redirect('');
+        }
+        return view('forum.edit',compact('discussion'));
     }
 
     public function create(){
@@ -46,5 +63,16 @@ class PostController extends Controller
         ];
         $discussion = Discussion::create(array_merge($request->all(),$data));
         return redirect('discussion/'.$discussion->id);
+    }
+
+    public function update(Requests\PostCreateRequest $request,$id)
+    {
+        $discussion = Discussion::findOrFail($id);
+        if(\Auth::user()->id !== $discussion->user_id){
+            return redirect('');
+        }
+        $discussion->update($request->all());
+        // redirect('')函数的参数中如果使用/无法跳转
+        return redirect()->action('PostController@show',['id'=>$discussion->id]);
     }
 }
